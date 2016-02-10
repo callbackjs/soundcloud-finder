@@ -25,7 +25,7 @@ app.get('/search', function(request, response) {
 
       response.set('Content-type', 'application/json');
       response.status(STATUS_OK);
-      response.send(tracks);
+      response.send(JSON.stringify(tracks));
     });
   }
 });
