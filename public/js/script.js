@@ -1,43 +1,43 @@
 // soundcloud api key
-var SC_CLIENT_ID = '1c3aeb3f91390630d351f3c708148086';
-var STATUS_OK = 200;
+const SC_CLIENT_ID = '1c3aeb3f91390630d351f3c708148086'
+const STATUS_OK = 200
 
-SC.initialize({ client_id: SC_CLIENT_ID });
-var $player = $('#player');
+SC.initialize({client_id: SC_CLIENT_ID})
+const player = document.querySelector('#player')
+const search = document.querySelector('#search')
 
-$("#search").submit(function() {
-  event.preventDefault();
+search.addEventListener('submit', event => {
+  event.preventDefault()
+  player.textContent = 'Loading...'
 
-  var title = $('#search input[name="title"]').val();
-  var artist = $('#search input[name="artist"]').val();
+  const title = search.querySelector('[name="title"]').value
+  const artist = search.querySelector('[name="artist"]').value
 
-  $player.text('Loading...');
-
-  var request = new XMLHttpRequest();
-  request.addEventListener('load', function() {
+  const request = new XMLHttpRequest()
+  request.addEventListener('load', () => {
     if (request.status === STATUS_OK) {
-      var tracks = JSON.parse(request.responseText);
+      const tracks = JSON.parse(request.responseText)
 
       if (tracks.length === 0) {
-        $player.text('No tracks were found.');
+        player.textContent = 'No tracks were found.'
       } else {
-        displayPlayer(tracks[0]);
+        displayPlayer(tracks[0])
       }
     } else {
-      $player.text(request.responseText);
+      player.textContent = request.responseText
     }
-  });
+  })
 
   // make request to our search endpoint
-  var searchParams = 'artist=' + encodeURIComponent(artist) +
-    '&title=' + encodeURIComponent(title);
-  request.open('GET', '/search?' + searchParams);
-  request.send();
-});
+  const searchParams = 'artist=' + encodeURIComponent(artist) +
+    '&title=' + encodeURIComponent(title)
+  request.open('GET', '/search?' + searchParams)
+  request.send()
+})
 
 /* Display SoundCloud player for the given track. */
 function displayPlayer(track) {
-  SC.oEmbed(track.permalink_url, { auto_play: true }, function(output) {
-    $player.html(output.html);
-  });
+  SC.oEmbed(track.permalink_url, {auto_play: true}, output => {
+    player.innerHTML = output.html
+  })
 }
