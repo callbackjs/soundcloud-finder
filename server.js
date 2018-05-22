@@ -4,11 +4,11 @@ const soundcloud = require('./lib/soundcloud')
 const STATUS_OK = 200
 const STATUS_USER_ERROR = 422
 
-const app = express()
+const server = express()
 // serve all files out of public folder
-app.use(express.static('public'))
+server.use(express.static('public'))
 
-app.get('/search', function(request, response) {
+server.get('/search', function(request, response) {
   const title = request.query.title
   const artist = request.query.artist
 
@@ -32,4 +32,4 @@ app.get('/search', function(request, response) {
 
 const port = 3000
 console.log('Listening at 127.0.0.1:' + port)
-app.listen(port)
+server.listen(port)
